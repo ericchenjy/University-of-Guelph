@@ -1,0 +1,30 @@
+
+Source file: L10_3.X68
+Assembled on: 18-11-22 at: 20:17:12
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        
+    2           0000C001     DUART:    EQU       $00C001               ;;base address of 68681
+    3           00000002     SRA:      EQU       2                     ;;input port register
+    4           00000006     RBA:      EQU       6
+    5           0000001C     OPR_SET:  EQU       14*2                  ;;set bit command reg.
+    6           0000001E     OPR_CLR:  EQU       15*2                  ;;clear bit cmd. reg.
+    7                        
+    8  00008000                        ORG       $8000
+    9  00008000 207C0000C001 SCAN:     MOVEA.L   #DUART,A0             ;;A0 points to 68681
+   10  00008006 1E280002     LOOP:     MOVE.B    SRA(A0),D7            ;;read input port
+   11  0000800A 02470001               ANDI      #1,D7                 ;;RxRDy = 1
+   12  0000800E 67F6                   BEQ       LOOP
+   13  00008010 10280006               MOVE.B    RBA(A0),D0
+   14  00008014 1140001E               MOVE.B    D0,OPR_CLR(A0)        ;;clr. bits, set pins
+   15  00008018 4600                   NOT.B     D0
+   16  0000801A 1140001C               MOVE.B    D0,OPR_SET(A0)        ;;set bits, clr. pins
+   17  0000801E 4600                   NOT.B     D0                    ;;restore D0
+   18  00008020 0C000047               CMPI.B    #71,D0
+   19  00008024 66DA                   BNE       SCAN
+   20  00008026 4E4E                   TRAP      #14
+   21                        
+   22           00008000               END       SCAN
+
+Lines: 22, Errors: 0, Warnings: 0.

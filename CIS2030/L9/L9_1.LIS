@@ -1,0 +1,51 @@
+
+Source file: L9_1.X68
+Assembled on: 18-11-15 at: 20:52:14
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00008000                        ORG       $8000
+    2  00008000 4E45         START:    TRAP      #5
+    3  00008002 4E4E                   TRAP      #14
+    4                        
+    5  00008024                        ORG       $8024
+    6  00008024 4EF900009000           JMP       TRAPS
+    7                        
+    8  00009000                        ORG       $9000
+    9  00009000 207C0000A000 TRAPS:    MOVEA.L   #MESSAGE,A0           ;//Make the mesage point to A0
+   10                         
+   11  00009006 2018         LOOP:     MOVE.L    (A0)+,D0
+   12  00009008 0C000000               CMPI.B    #$0,D0                ;//Checking if it is a null character
+   13  0000900C 6700001C               BEQ       EXIT
+   14                         
+   15  00009010 0C000060               CMPI.B    #$60,D0               ;//Checking if it is a lowerCase
+   16  00009014 6D00000A               BLT       UPPERCASE
+   17                         
+   18                        
+   19                        
+   20  00009018 04000020     BACK:     SUB.B     #$20,D0               ;//If it is, minus 20 concert it to a upp case
+   21  0000901C 60000008               BRA       NEXT
+   22                        
+   23  00009020 0C000040     UPPERCASE: CMPI.B    #$40,D0
+   24  00009024 6EF2                   BGT       BACK
+   25                         
+   26  00009026 4E41         NEXT:     TRAP      #1
+   27  00009028 60DC                   BRA       LOOP
+   28                        
+   29  0000902A 4E41         EXIT:     TRAP      #1
+   30  0000902C 4E73                   RTE       
+   31                        
+   32                        
+   33  0000A000                        ORG       $A000
+   34                        
+   35  0000A000 417373656D62 MESSAGE:  DC.B      'Assembly Language Programming is Fun!',0
+                6C79204C616E
+                677561676520
+                50726F677261
+                6D6D696E6720
+                69732046756E
+                2100        
+   36                        
+   37           00008000               END       START
+
+Lines: 37, Errors: 0, Warnings: 0.

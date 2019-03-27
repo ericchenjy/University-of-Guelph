@@ -1,0 +1,35 @@
+
+Source file: L10_2.X68
+Assembled on: 18-11-22 at: 20:11:39
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1           0000C001     DUART:    EQU       $00C001               ;;Base Address
+    2           00000002     SRA:      EQU       2                     ;;Status Register A
+    3           00000006     RBA:      EQU       6                     ;;Transmit buffer
+    4                        
+    5                        
+    6  00008000                        ORG       $8000
+    7  00008000 227C00009000 START:    MOVEA.L   #STRING,A1
+    8  00008006 4EB90000800E           JSR       SCAN
+    9  0000800C 4E4F                   TRAP      #15
+   10  0000800E              SCAN:               
+   11                          
+   12  0000800E 41F90000C001           LEA       DUART,A0              ;;Point to A0
+   13  00008014 1E280002     LOOP:     MOVE.B    SRA(A0),D7            ;;read status reg A
+   14  00008018 02070001               ANDI.B    #1,D7                 ;;RxRDY = 1
+   15  0000801C 67F6                   BEQ       LOOP                  ;;no: check again
+   16  0000801E 0C110000               CMPI.B    #0,(A1)
+   17  00008022 67000008               BEQ       EXIT
+   18  00008026 12E80006               MOVE.B    RBA(A0),(A1)+
+   19  0000802A 60E8                   BRA       LOOP
+   20  0000802C 4E75         EXIT:     RTS       
+   21                         
+   22                        
+   23  00009000                        ORG       $9000
+   24  00009000 00000010     STRING:   DS.B      16
+   25  00009010 00                     DC.B      0
+   26                         
+   27           00008000               END       START
+
+Lines: 27, Errors: 0, Warnings: 0.

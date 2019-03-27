@@ -1,0 +1,26 @@
+
+Source file: L6_11.X68
+Assembled on: 18-10-25 at: 17:38:21
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00008000                        ORG       $8000
+    2  00008000 41F900009000 START:    LEA       LIST,A0
+    3  00008006 4242                   CLR.W     D2
+    4  00008008 223C00000008           MOVE.L    #INDEX,D1
+    5  0000800E 67000008     LOOP:     BEQ       DONE
+    6  00008012 D458                   ADD.W     (A0)+,D2
+    7  00008014 5301                   SUBQ.B    #1,D1
+    8  00008016 60F6                   BRA       LOOP
+    9  00008018 3082         DONE:     MOVE.W    D2,(A0)
+   10  0000801A 4E4E                   TRAP      #14
+   11                        
+   12  00009000                        ORG       $9000
+   13  00009000 000100020003 LIST:     DC.W      1,2,3,4,5,6,7,8
+                000400050006
+                00070008    
+   14  00009010 00000002     SUM:      DS.W      1
+   15           00000008     INDEX:    EQU       (SUM-LIST)/2
+   16           00008000               END       START
+
+Lines: 16, Errors: 0, Warnings: 0.

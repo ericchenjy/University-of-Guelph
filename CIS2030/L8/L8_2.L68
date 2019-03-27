@@ -1,0 +1,55 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v3.1 April 19, 2005
+Created On: 08/11/2018 8:51:11 PM
+
+00008000                             1      ORG $8000
+00008000                             2  
+00008000                             3  START:
+00008000  3F39 00009004              4      MOVE.W  X,-(SP)
+00008006  3F39 00009002              5      MOVE.W  Y,-(SP)
+0000800C  3F39 00009000              6      MOVE.W  Z,-(SP)
+00008012  4EB9 0000801E              7      JSR SolveQuad
+00008018  4FEF 0006                  8      LEA 6(SP),SP
+0000801C  4E4E                       9      TRAP    #14
+0000801E                            10      
+0000801E                            11  SolveQuad   MOVEM.W     D0-D2/-(SP)
+0000801E  302F 000E                 12      MOVE.W  14(SP),D0
+00008022  322F 000C                 13      MOVE.W  12(SP),D1
+00008026  342F 000A                 14      MOVE.W  10(SP),D2
+0000802A                            15  
+0000802A                            16      
+0000802A  C3C0                      17      MULS.W  D0,D1   //x * y
+0000802C                            18  
+0000802C  C1C0                      19      MULS.W  D0,D0   //x * x
+0000802E  C1FC 0005                 20      MULS.W  #5,D0   //5 * x
+00008032                            21  
+00008032                            22  
+00008032  C3FC 0002                 23      MULS.W  #2,D1   //2 * y = y
+00008036                            24      
+00008036  9041                      25      SUB.W   D1,D0   //x - y = x
+00008038                            26      
+00008038  C5C2                      27      MULS    D2,D2   //z * z 
+0000803A                            28  
+0000803A  D042                      29      ADD.W   D2,D0   //x + z
+0000803C  4C9F 0007                 30      MOVEM.W (SP)+,D0-D2
+00008040  4E75                      31      RTS
+00008042                            32      
+00009000                            33      ORG $9000
+00009000  0005                      34  Z   DC.W    5
+00009002  0004                      35  Y   DC.W    4
+00009004  0003                      36  X   DC.W    3
+00009006                            37  
+00009006                            38      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+SOLVEQUAD           801E
+START               8000
+X                   9004
+Y                   9002
+Z                   9000

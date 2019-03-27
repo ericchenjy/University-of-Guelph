@@ -1,0 +1,40 @@
+
+Source file: L8_2.X68
+Assembled on: 18-11-08 at: 19:40:24
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00008000                        ORG       $8000
+    2  00008000 3F3900009004 START:    MOVE.W    X,-(SP)
+    3  00008006 3F3900009002           MOVE.W    Y,-(SP)
+    4  0000800C 3F3900009000           MOVE.W    Z,-(SP)
+    5                        
+    6  00008012 4EB90000801E           JSR       SOLVEQUAD
+    7  00008018 4FEF0006               LEA       6(SP),SP
+    8  0000801C 4E4E                   TRAP      #14
+    9                         
+   10  0000801E 302F0004     SOLVEQUAD: MOVE.W    4(SP),D0
+   11  00008022 322F0006               MOVE.W    6(SP),D1
+   12  00008026 342F0008               MOVE.W    8(SP),D2
+   13                        
+   14  0000802A C1C1                   MULS.W    D1,D0                 ;//y * x = y
+   15                        
+   16  0000802C C3C1                   MULS.W    D1,D1                 ;//x * x
+   17  0000802E C3FC0005               MULS.W    #5,D1                 ;//5 * x
+   18                        
+   19  00008032 C1FC0002               MULS.W    #2,D0                 ;//2 * y = y
+   20  00008036 9240                   SUB.W     D0,D1                 ;//x - y = x
+   21                         
+   22  00008038 C5C2                   MULS      D2,D2                 ;//z * z 
+   23                        
+   24  0000803A D242                   ADD.W     D2,D1                 ;//x + z
+   25  0000803C 4E75                   RTS       
+   26                         
+   27  00009000                        ORG       $9000
+   28  00009000 0002         Z:        DC.W      2
+   29  00009002 0002         Y:        DC.W      2
+   30  00009004 0002         X:        DC.W      2
+   31                        
+   32           00008000               END       START
+
+Lines: 32, Errors: 0, Warnings: 0.

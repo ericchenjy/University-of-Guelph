@@ -1,0 +1,32 @@
+
+Source file: L10_1.X68
+Assembled on: 18-11-22 at: 18:50:42
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1           0000C001     DUART:    EQU       $00C001               ;;Base address
+    2           00000002     SRA:      EQU       2                     ;;Status Register A
+    3           00000006     TBA:      EQU       6                     ;;Transmit buffer
+    4                        
+    5                         
+    6  00008000                        ORG       $8000
+    7  00008000 43F900009000           LEA       TEXT,A1               ;;Point to A0
+    8  00008006 1019         PRINT:    MOVE.B    (A1)+,D0              ;;get Character
+    9  00008008 0C8000000000           CMP.L     #0,D0                 ;;Checking if it is a null
+   10  0000800E 67000018               BEQ       EXIT                  ;;if it is exit
+   11  00008012 41F90000C001           LEA       DUART,A0              ;;A0 points 68681
+   12  00008018 1E280002     LOOP:     MOVE.B    SRA(A0),D7            ;;get port A status
+   13  0000801C 02070004               ANDI.B    #4,D7                 ;;buffer memory
+   14  00008020 67F6                   BEQ       LOOP                  ;;no, check it again
+   15  00008022 11400006               MOVE.B    D0,TBA(A0)            ;;yes; output chracter
+   16  00008026 60DE                   BRA       PRINT
+   17                        
+   18  00008028 4E4E         EXIT:     TRAP      #14
+   19                        
+   20  00009000                        ORG       $9000
+   21  00009000 48656C6C6F20 TEXT:     DC.B      'Hello world!',0
+                776F726C6421
+                00          
+   22           00008006               END       PRINT
+
+Lines: 22, Errors: 0, Warnings: 0.
